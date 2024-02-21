@@ -1,65 +1,41 @@
-import java.util.Scanner;
- 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
 public class Main {
-	public static void main(String[] args) {
- 
-		Scanner in = new Scanner(System.in);
- 
- 
-		int T = in.nextInt();
- 
-		while (T-- > 0) {
- 
-			int x1 = in.nextInt();
-			int y1 = in.nextInt();
-			int r1 = in.nextInt();
- 
-			int x2 = in.nextInt();
-			int y2 = in.nextInt();
-			int r2 = in.nextInt();
-			
-			System.out.println(tangent_point(x1, y1, r1, x2, y2, r2));
-		}
- 
-	}
- 
- 
-	// 접점 개수 구하는 함수
-	public static int tangent_point(int x1, int y1, int r1, int x2, int y2, int r2) {
-    
-		int distance_pow = (int)(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));	// 중점간 거리 distance의 제곱 
- 
- 
-		// case 1 : 중점이 같으면서 반지름도 같을 경우
-		if(x1 == x2 && y1 == y2 && r1 == r2) {
-			return -1;
-		}
-		
-		// case 2-1 : 두 원의 반지름 합보다 중점간 거리가 더 길 때 
-		else if(distance_pow > Math.pow(r1 + r2, 2)) {
-			return 0;
-		}
- 
-		// case 2-2 : 원 안에 원이 있으나 내접하지 않을 때 
-		else if(distance_pow < Math.pow(r2 - r1, 2)) {
-			return 0;
-		}
-		
-		// case 3-1 : 내접할 때 
-		else if(distance_pow == Math.pow(r2 - r1, 2)) {
-			return 1;
-		}
-        
-		
-		// case 3-2 : 외접할 때 
-		else if(distance_pow == Math.pow(r1 + r2, 2)) {
-			return 1;
-		}
-		
-		else {
-			return 2;
-		}
-		
-	}
- 
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int T = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < T; i++) {
+            st = new StringTokenizer(br.readLine());
+
+            int x1 = Integer.parseInt(st.nextToken());
+            int y1 = Integer.parseInt(st.nextToken());
+            int r1 = Integer.parseInt(st.nextToken());
+
+            int x2 = Integer.parseInt(st.nextToken());
+            int y2 = Integer.parseInt(st.nextToken());
+            int r2 = Integer.parseInt(st.nextToken());
+
+            int distance = (int) (Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+            // 같은 원일때
+            if (x1 == x2 && y1 == y2 && r1 == r2) {
+                System.out.println(-1);
+            }
+            // 원이 내접하거나 외접할때
+            else if (Math.pow(r1 + r2, 2) == distance || Math.pow(r2 - r1, 2) == distance) {
+                System.out.println(1);
+            }
+            // 원이 접하지 않을때
+            else if (Math.pow(r1 + r2, 2) < distance || Math.pow(r2 - r1, 2) > distance) {
+                System.out.println(0);
+            } else {
+                System.out.println(2);
+            }
+        }
+    }
 }
