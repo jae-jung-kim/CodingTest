@@ -1,50 +1,66 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		int total = Integer.parseInt(br.readLine()); //스위치의 개수
-		int[] switches = new int[total];
-		StringTokenizer st = new StringTokenizer(br.readLine()); //스위치 string 받음
-		for(int i=0; i<total; i++)
-			switches[i] = Integer.parseInt(st.nextToken());
-		
-		int stuCnt = Integer.parseInt(br.readLine()); //학생의 명수
-		for(int i=0; i<stuCnt; i++) {
-			st = new StringTokenizer(br.readLine());
-			int gender = Integer.parseInt(st.nextToken());
-			int number = Integer.parseInt(st.nextToken());
-			
-			//남학생이면
-			if(gender == 1) {
-				for(int j=0; j<total; j++) //뽑은 수의 배수 위치에 있는 스위치의 상태를 바꾼다.
-					if((j+1) % number == 0)
-						switches[j] = switches[j] == 0? 1: 0;
-			}
-			//여학생이면
-			else {
-				//뽑은 수를 중심으로 좌우가 대칭이면 상태를 바꾼다.
-				switches[number - 1] = switches[number - 1] == 0 ? 1 : 0;
-				for(int j=1; j<total/2; j++) {
-					if(number - 1 + j >= total || number - 1 - j < 0)
-						break;
-					if(switches[number - 1 - j] == switches[number - 1 + j]) {
-						switches[number - 1 - j] = switches[number - 1 - j] == 0 ? 1 : 0;
-						switches[number - 1 + j] = switches[number - 1 + j] == 0 ? 1 : 0;
-					}
-					else break; //대칭 아닌것이 나오면 바로 끝낸다.
-				}
-			}
-		}
-		
-		//한 줄에 20개씩 출력
-		for(int i=0; i<total; i++) {
-			System.out.print(switches[i] + " ");
-			if((i+1) % 20 == 0)
-				System.out.println();
-		}
-	}
+    static int[] switches;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(st.nextToken());
+        switches = new int[N+2];
+        st = new StringTokenizer(br.readLine());
+        for(int i=1; i<=N; i++){
+            switches[i] = Integer.parseInt(st.nextToken());
+        }
+        st = new StringTokenizer(br.readLine());
+        int studentNumber = Integer.parseInt(st.nextToken());
+        for(int i=0; i<studentNumber; i++){
+            st = new StringTokenizer(br.readLine());
+            int gen = Integer.parseInt(st.nextToken());
+            int switchNumber = Integer.parseInt(st.nextToken());
+            if(gen==1){
+                int index = switchNumber;
+                while(switchNumber<=N){
+                    changeNumber(switches, switchNumber);
+                    switchNumber+=index;
+                }
+            }else{
+                int left = switchNumber-1;
+                int right = switchNumber+1;
+                while(left!=0&&right!=N+1){
+                    if(switches[left]!=switches[right]) {
+                        break;
+                    }
+                    left--;
+                    right++;
+                }
+                for(int j = left+1; j<right; j++){
+                    if(switches[j]==1){
+                        switches[j]=0;
+                    }else{
+                        switches[j]=1;
+                    }
+                }
+
+            }
+        }
+        for(int i=1; i<=N; i++){
+            sb.append(switches[i]).append(" ");
+            if(i % 20 == 0) {
+                sb.append("\n");
+            }
+        }
+        System.out.println(sb);
+
+    }
+
+    public static void changeNumber(int[] switches, int switchNumber){
+        if(switches[switchNumber]==0){
+            switches[switchNumber]=1;
+        }else{
+            switches[switchNumber]=0;
+        }
+    }
 }
