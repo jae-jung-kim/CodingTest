@@ -1,35 +1,36 @@
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.*;
 
 public class Main {
+
+
     public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt();
-        Loop1:
-        for (int i = 0; i < T; i++) {
-            String s = sc.next();
-            String[] PS = s.split("");
-            int index = 0;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine());
+        for(int t=0; t<T; t++){
+            String s = br.readLine();
+            int sum = 0;
             boolean a = true;
-            for (String p : PS) {
-                if (p.equals("(")) {
-                    index++;
-                } else {
-                    index--;
+            for(int i=0; i<s.length(); i++){
+                if(s.charAt(i)=='('){
+                    sum+=1;
+                }else{
+                    sum-=1;
                 }
-                if (index < 0) {
-                    System.out.println("NO");
+                if(sum<0){
+                    sb.append("NO").append("\n");
                     a = false;
                     break;
                 }
             }
-            if (a) {
-                if (index == 0) {
-                    System.out.println("YES");
-                } else {
-                    System.out.println("NO");
+            if(a){
+                if(sum==0){
+                    sb.append("YES").append("\n");
+                }else{
+                    sb.append("NO").append("\n");
                 }
             }
         }
+        System.out.println(sb);
     }
 }
