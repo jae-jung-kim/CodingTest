@@ -42,7 +42,7 @@ public class Main {
         }
 
         System.out.println(Math.round(sum / N));
-        System.out.println(arr[((N - 1) / 2)]);
+        System.out.println(arr[(N - 1) / 2]);
         System.out.println(mod);
         System.out.println(arr[N - 1] - arr[0]);
     }
